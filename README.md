@@ -17,7 +17,7 @@ yarn
 
 ### 2. Configure environment
 
-Create a `.env` file in the project root (already included):
+A `.env` file is already included in the project root with the following default:
 
 ```env
 VITE_API_URL=http://localhost:3000
@@ -50,7 +50,7 @@ The app will be available at `http://localhost:5173`.
 ## Available Scripts
 
 | Command | Description |
-|---|---|
+| --- | --- |
 | `yarn dev` | Start the Vite development server |
 | `yarn server` | Start the mock JSON API on port 3000 |
 | `yarn build` | Type-check and build for production |
@@ -78,12 +78,6 @@ Playwright automatically starts both servers before running tests.
 yarn e2e
 ```
 
-To run with the interactive Playwright UI:
-
-```bash
-yarn e2e:ui
-```
-
 > Requires Playwright browsers to be installed: `npx playwright install`
 
 ---
@@ -104,7 +98,7 @@ yarn e2e:ui
 ## Assumptions & Tradeoffs
 
 - **Mock API using json-server** — data is fetched via `json-server` so the architecture is structured as if connecting to a real backend. Switching to a real API only requires updating `VITE_API_URL`.
-- **SWR for data fetching** — chosen over useEffect + fetch
+- **SWR for data fetching** — chosen over `useEffect` + `fetch` for built-in caching, deduplication, and revalidation with minimal boilerplate
 - **Context over Redux** — the app has a single shared state (selected card + theme). A full state management library would be over-engineering at this scale.
 - **Debounced amount filter** — the filter input is debounced by 300ms to avoid filtering on every keystroke.
 - **Error handling** — HTTP errors are typed (`HttpError` with a `status` code) so the UI can show context-specific messages (404, 401/403, 5xx) rather than a generic failure message.
@@ -113,14 +107,14 @@ yarn e2e:ui
 
 ## What I Would Improve With More Time
 
-- **Pagination** for large transaction lists
-- **Loading UI** when apis are loading the data
-- **Internationalisation (i18n)** Multi language support
-- **Path aliases** replace deep relative imports like `../../../../api/Http` with short aliases.
-- **Feature-level error boundaries** when adding multiple features it will be good to add feature level error boundaries
-- **Responsive design** for mobile application 
-- **Better empty state messaging** for no transactions in amount filter and no transactions related to particular card
+- **Pagination** — for large transaction lists
+- **Loading UI** — when APIs are loading the data
+- **Internationalisation (i18n)** — multi-language support
+- **Path aliases** — replace deep relative imports like `../../../../api/Http` with short aliases
+- **Feature-level error boundaries** — to isolate failures per feature and prevent a single error from taking down the entire UI
+- **Responsive design** — for mobile application
+- **Better empty state messaging** — for no transactions matching the amount filter and no transactions related to a particular card
 - **Unit test coverage to 95%+** — expand test coverage across components, hooks, and utility functions to reach and maintain a 95%+ coverage threshold
 - **Better error UI** — replace the plain `<p role="alert">` with a proper error component
 - **Card type support** — the card theme colour is currently derived by matching keywords in the card `description` string (e.g. "Private", "Business"). This is fragile; the API should return a `type` field (e.g. `"personal" | "business"`) so the UI can apply themes based on a proper data contract rather than string parsing
-- **Configure ESLint** — add and configure ESLint
+- **Configure ESLint** — add and configure ESLint with plugins for React, React Hooks, and TypeScript to enforce consistent code style and catch common bugs early
